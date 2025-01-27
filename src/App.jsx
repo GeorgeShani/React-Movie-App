@@ -25,12 +25,6 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  // Debounce the search term to prevent making too many API requests
-  // by waiting for the user to stop typing for 500ms
-  useDebounce(() => {
-    setDebouncedSearchTerm(searchTerm);
-  }, 1200, [searchTerm]);
-
   const fetchMovies = async (query = "") => {
     setIsLoading(true);
     setErrorMessage("");
@@ -73,6 +67,16 @@ const App = () => {
     }
   };
 
+  // Debounce the search term to prevent making too many API requests
+  // by waiting for the user to stop typing for 500ms
+  useDebounce(
+    () => {
+      setDebouncedSearchTerm(searchTerm);
+    },
+    1200,
+    [searchTerm]
+  );
+
   useEffect(() => {
     fetchMovies(debouncedSearchTerm);
   }, [debouncedSearchTerm]);
@@ -106,8 +110,8 @@ const App = () => {
             </ul>
           </section>
         )}
-        <section className="latest-movies">
-          <h2>Latest Movies</h2>
+        <section className="all-movies">
+          <h2>All Movies</h2>
           {isLoading ? (
             <Spinner />
           ) : errorMessage ? (
